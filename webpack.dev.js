@@ -17,6 +17,7 @@ module.exports = merge(common, {
       disableDotRule: true,
     },
     hot: true,
+    stats: 'minimal',
   },
   plugins: [
     new Dotenv({
