@@ -88,12 +88,18 @@ module.exports = merge(common, {
                   sourceMap: true,
                 },
               },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  sourceMap: true,
+                },
+              },
             ],
           },
           {
             loader: 'file-loader',
             exclude: [
-              /\.(js|mjs|jsx|ts|tsx)$/, //
+              /\.(ts|js)x?$/, //
               /\.html$/,
               /\.json$/,
             ],
