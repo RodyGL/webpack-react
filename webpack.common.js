@@ -1,6 +1,5 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const paths = {
   appBuild: path.resolve(__dirname, 'build'),
@@ -13,58 +12,57 @@ const paths = {
 };
 
 const common = {
-  entry: {
-    app: paths.appIndex,
-  },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: paths.appPublic,
-          to: paths.appBuild,
-        },
-      ],
-    }),
+  entry: [
+    paths.appIndex, //
   ],
   output: {
-    filename: '[name].bundle.js',
     path: paths.appBuild,
+    filename: 'static/js/[name].[contenthash:8].js',
+    chunkFilename: 'static/js/[name].[contenthash:8].chunk.js',
+    globalObject: 'this',
   },
   resolve: {
     extensions: [
       '.ts', //
       '.tsx',
       '.js',
+      '.jsx',
       '.json',
     ],
   },
   module: {
+    strictExportPresence: true,
     rules: [
       {
-        test: /\.(ts|js)x?$/,
-        include: paths.appSrc,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          '@svgr/webpack', //
-          'url-loader',
-        ],
-      },
-      {
-        test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-            },
-          },
-        ],
+        parser: {
+          requireEnsure: false,
+        },
       },
     ],
+  },
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin({
+        sourceMap: true,
+        minimizerOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: {
+                removeAll: true,
+              },
+            },
+          ],
+        },
+      }),
+    ],
+    splitChunks: {
+      chunks: 'all',
+      name: false,
+    },
+    runtimeChunk: {
+      name: (entrypoint) => `runtime-${entrypoint.name}`,
+    },
   },
 };
 
