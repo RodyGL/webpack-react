@@ -72,6 +72,46 @@ module.exports = merge(common, {
             test: /\.(ts|js)x?$/,
             include: paths.appSrc,
             loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    // Allow importing core-js in entrypoint and use browserlist to select polyfills
+                    useBuiltIns: 'entry',
+                    corejs: 3,
+                    exclude: ['transform-typeof-symbol'],
+                  },
+                ],
+                [
+                  '@babel/preset-react',
+                  {
+                    development: false,
+                    // Will use the native built-in instead of trying to polyfill
+                    // behavior for any plugins that require one.
+                    useBuiltIns: true,
+                  },
+                ],
+                '@babel/preset-typescript',
+              ],
+              plugins: [
+                '@babel/plugin-proposal-class-properties',
+                [
+                  '@babel/plugin-transform-runtime',
+                  {
+                    useESModules: true,
+                  },
+                ],
+                [
+                  'transform-react-remove-prop-types',
+                  {
+                    removeImport: true,
+                  },
+                ],
+              ],
+              cacheDirectory: true,
+              cacheCompression: false,
+            },
           },
           {
             test: /\.(sa|sc|c)ss$/,
@@ -92,6 +132,11 @@ module.exports = merge(common, {
                 loader: 'postcss-loader',
                 options: {
                   sourceMap: true,
+                  postcssOptions: {
+                    plugins: [
+                      'autoprefixer', //
+                    ],
+                  },
                 },
               },
             ],

@@ -43,27 +43,68 @@ module.exports = merge(common, {
         oneOf: [
           {
             test: /\.(bmp|png|jpe?g|gif)$/i,
-            use: [
-              {
-                loader: 'url-loader',
-                options: {
-                  limit: 10000,
-                  name: 'static/media/[name].[hash:8].[ext]',
-                },
-              },
-            ],
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              name: 'static/media/[name].[hash:8].[ext]',
+            },
           },
           {
             test: /\.(ts|js)x?$/,
             include: paths.appSrc,
             loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    // Allow importing core-js in entrypoint and use browserlist to select polyfills
+                    useBuiltIns: 'entry',
+                    corejs: 3,
+                    exclude: ['transform-typeof-symbol'],
+                  },
+                ],
+                [
+                  '@babel/preset-react',
+                  {
+                    // Adds component stack to warning messages
+                    // Adds __self attribute to JSX which React will use for some warnings
+                    development: true,
+                    // Will use the native built-in instead of trying to polyfill
+                    // behavior for any plugins that require one.
+                    useBuiltIns: true,
+                  },
+                ],
+                '@babel/preset-typescript',
+              ],
+              plugins: [
+                '@babel/plugin-proposal-class-properties',
+                [
+                  '@babel/plugin-transform-runtime',
+                  {
+                    useESModules: true,
+                  },
+                ],
+              ],
+              cacheDirectory: true,
+              cacheCompression: false,
+            },
           },
           {
             test: /\.(sa|sc|c)ss$/,
             use: [
               'style-loader', //
               'css-loader',
-              'postcss-loader',
+              {
+                loader: 'postcss-loader',
+                options: {
+                  postcssOptions: {
+                    plugins: [
+                      'autoprefixer', //
+                    ],
+                  },
+                },
+              },
             ],
           },
           {
