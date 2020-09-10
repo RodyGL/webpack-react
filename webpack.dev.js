@@ -1,3 +1,5 @@
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const { HotModuleReplacementPlugin } = require('webpack');
 const { merge } = require('webpack-merge');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -27,6 +29,8 @@ module.exports = merge(common, {
       inject: true,
       template: paths.appHtml,
     }),
+    new HotModuleReplacementPlugin(),
+    new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
         diagnosticOptions: {
@@ -85,6 +89,7 @@ module.exports = merge(common, {
                     useESModules: true,
                   },
                 ],
+                'react-refresh/babel',
               ],
               cacheDirectory: true,
               cacheCompression: false,
