@@ -99,7 +99,7 @@ module.exports = merge(common, {
           {
             test: /\.(sa|sc|c)ss$/,
             use: [
-              'style-loader', //
+              'style-loader',
               'css-loader',
               {
                 loader: 'postcss-loader',
@@ -116,7 +116,7 @@ module.exports = merge(common, {
           {
             loader: 'file-loader',
             exclude: [
-              /\.(js|mjs|jsx|ts|tsx)$/, //
+              /\.(ts|js)x?$/, //
               /\.html$/,
               /\.json$/,
             ],
