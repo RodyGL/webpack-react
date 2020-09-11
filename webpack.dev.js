@@ -55,7 +55,7 @@ module.exports = merge(common, {
             },
           },
           {
-            test: /\.(ts|js)x?$/,
+            test: /\.(js|mjs|jsx|ts|tsx)$/,
             include: paths.appSrc,
             loader: 'babel-loader',
             options: {
@@ -116,7 +116,7 @@ module.exports = merge(common, {
           {
             loader: 'file-loader',
             exclude: [
-              /\.(ts|js)x?$/, //
+              /\.(js|mjs|jsx|ts|tsx)$/, //
               /\.html$/,
               /\.json$/,
             ],
