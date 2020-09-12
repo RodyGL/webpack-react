@@ -35,6 +35,9 @@ const common = {
       '.web.jsx',
       '.jsx',
     ],
+    alias: {
+      '@': paths.appSrc,
+    },
   },
   module: {
     strictExportPresence: true,
