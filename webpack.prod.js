@@ -1,20 +1,20 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { EnvironmentPlugin } = require('webpack');
 const { merge } = require('webpack-merge');
+const getClientEnvironment = require('./env.js');
 const { common, paths } = require('./webpack.common.js');
+
+const env = getClientEnvironment();
 
 module.exports = merge(common, {
   mode: 'production',
   devtool: 'source-map',
   plugins: [
     new CleanWebpackPlugin(),
-    new Dotenv({
-      path: paths.appEnv,
-    }),
     new CopyPlugin({
       patterns: [
         {
@@ -26,6 +26,7 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
+      templateParameters: env,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -39,6 +40,7 @@ module.exports = merge(common, {
         minifyURLs: true,
       },
     }),
+    new EnvironmentPlugin(Object.keys(env)),
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[contenthash:8].css',
       chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',

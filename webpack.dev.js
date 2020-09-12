@@ -1,10 +1,12 @@
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { HotModuleReplacementPlugin } = require('webpack');
+const { HotModuleReplacementPlugin, EnvironmentPlugin } = require('webpack');
 const { merge } = require('webpack-merge');
+const getClientEnvironment = require('./env.js');
 const { common, paths } = require('./webpack.common.js');
+
+const env = getClientEnvironment();
 
 module.exports = merge(common, {
   mode: 'development',
@@ -23,13 +25,12 @@ module.exports = merge(common, {
     quiet: true,
   },
   plugins: [
-    new Dotenv({
-      path: paths.appEnvDev,
-    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
+      templateParameters: env,
     }),
+    new EnvironmentPlugin(Object.keys(env)),
     new HotModuleReplacementPlugin(),
     new ReactRefreshWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
