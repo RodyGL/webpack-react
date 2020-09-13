@@ -7,8 +7,6 @@ const paths = {
   appHtml: path.resolve(__dirname, 'public/index.html'),
   appSrc: path.resolve(__dirname, 'src'),
   appIndex: path.resolve(__dirname, 'src/index'),
-  appEnv: path.resolve(__dirname, '.env'),
-  appEnvDev: path.resolve(__dirname, '.env.development'),
 };
 
 const common = {
