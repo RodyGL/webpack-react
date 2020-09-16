@@ -1,0 +1,9 @@
+{
+  /* ESLint options */
+  "eslint.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.workingDirectories": ["src"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
