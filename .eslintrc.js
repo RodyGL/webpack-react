@@ -24,6 +24,8 @@ module.exports = {
         'prettier/react',
       ],
       rules: {
+        'react/jsx-uses-react': 'off',
+        'react/react-in-jsx-scope': 'off',
         'react/self-closing-comp': [
           'error',
           {
@@ -40,6 +42,7 @@ module.exports = {
         ],
 
         '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
         '@typescript-eslint/unbound-method': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
@@ -52,6 +55,8 @@ module.exports = {
     },
   ],
   rules: {
+    'object-shorthand': ['error', 'always'],
+
     'import/order': [
       'error',
       {

@@ -25,6 +25,7 @@ const paths = {
   appHtml: path.resolve(__dirname, 'public/index.html'),
   appSrc: path.resolve(__dirname, 'src'),
   appIndex: path.resolve(__dirname, 'src/index'),
+  publicUrl: env.PUBLIC_URL ? env.PUBLIC_URL : '/',
 };
 
 module.exports = {
@@ -42,17 +43,20 @@ module.exports = {
       ? 'static/js/[name].[contenthash:8].chunk.js'
       : isEnvDevelopment && 'static/js/[name].chunk.js',
     globalObject: 'this',
+    publicPath: paths.publicUrl,
   },
   devServer: {
     open: true,
     port: 3000,
+    publicPath: paths.publicUrl,
     contentBase: paths.appPublic,
+    contentBasePublicPath: paths.publicUrl,
     watchContentBase: true,
     compress: true,
     clientLogLevel: 'silent',
     historyApiFallback: {
       disableDotRule: true,
-      index: env.PUBLIC_URL,
+      index: paths.publicUrl,
     },
     hot: true,
     overlay: false,
@@ -141,6 +145,7 @@ module.exports = {
                 [
                   '@babel/preset-env',
                   {
+                    runtime: 'automatic',
                     // Allow importing core-js in entrypoint and use browserlist to select polyfills
                     useBuiltIns: 'entry',
                     corejs: 3,
@@ -158,7 +163,12 @@ module.exports = {
                     useBuiltIns: true,
                   },
                 ],
-                '@babel/preset-typescript',
+                [
+                  '@babel/preset-typescript',
+                  {
+                    onlyRemoveTypeImports: true,
+                  },
+                ],
               ],
               plugins: [
                 '@babel/plugin-proposal-class-properties',
@@ -174,6 +184,15 @@ module.exports = {
                     removeImport: true,
                   },
                 ],
+                isEnvDevelopment && [
+                  'transform-imports',
+                  {
+                    'lodash-es': {
+                      transform: `lodash-es/\${member}`,
+                      preventFullImport: true,
+                    },
+                  },
+                ],
                 isEnvDevelopment && 'react-refresh/babel',
                 // Optional chaining and nullish coalescing are supported in @babel/preset-env,
                 // but not yet supported in webpack due to support missing from acorn.
@@ -183,6 +202,8 @@ module.exports = {
               ].filter(Boolean),
               cacheDirectory: true,
               cacheCompression: false,
+              sourceMaps: true,
+              inputSourceMap: true,
             },
           },
           {
