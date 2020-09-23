@@ -145,7 +145,6 @@ module.exports = {
                 [
                   '@babel/preset-env',
                   {
-                    runtime: 'automatic',
                     // Allow importing core-js in entrypoint and use browserlist to select polyfills
                     useBuiltIns: 'entry',
                     corejs: 3,
@@ -155,6 +154,7 @@ module.exports = {
                 [
                   '@babel/preset-react',
                   {
+                    runtime: 'automatic',
                     // Adds component stack to warning messages
                     // Adds __self attribute to JSX which React will use for some warnings
                     development: isEnvDevelopment,
