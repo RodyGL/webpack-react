@@ -163,12 +163,7 @@ module.exports = {
                     useBuiltIns: true,
                   },
                 ],
-                [
-                  '@babel/preset-typescript',
-                  {
-                    onlyRemoveTypeImports: true,
-                  },
-                ],
+                '@babel/preset-typescript',
               ],
               plugins: [
                 '@babel/plugin-proposal-class-properties',
