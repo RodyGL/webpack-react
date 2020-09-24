@@ -199,6 +199,7 @@ module.exports = {
               cacheCompression: false,
               sourceMaps: true,
               inputSourceMap: true,
+              compact: isEnvProduction,
             },
           },
           {
