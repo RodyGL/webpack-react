@@ -13,11 +13,11 @@ const envPath = path.resolve(__dirname, '.env');
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 const dotenvFiles = [
   `${envPath}.${NODE_ENV}.local`,
-  `${envPath}.${NODE_ENV}`,
   // Don't include `.env.local` for `test` environment
   // since normally you expect tests to produce the same
   // results for everyone
   NODE_ENV !== 'test' && `${envPath}.local`,
+  `${envPath}.${NODE_ENV}`,
   envPath,
 ].filter(Boolean);
 

@@ -1,9 +1,12 @@
 module.exports = {
   root: true,
+  plugins: ['prettier', 'import', 'promise'],
   extends: [
     'react-app',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:promise/recommended',
     'plugin:prettier/recommended',
-    'prettier/@typescript-eslint',
   ],
   overrides: [
     {
@@ -12,9 +15,21 @@ module.exports = {
         project: './tsconfig.json',
         tsconfigRootDir: __dirname,
       },
+      settings: {
+        'import/parsers': {
+          '@typescript-eslint/parser': ['.ts', '.tsx'],
+        },
+        'import/resolver': {
+          typescript: {},
+        },
+      },
       plugins: ['jsx-a11y'],
       extends: [
         'react-app',
+        'plugin:import/errors',
+        'plugin:import/warnings',
+        'plugin:import/typescript',
+        'plugin:promise/recommended',
         'plugin:jsx-a11y/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
